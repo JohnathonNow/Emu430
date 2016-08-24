@@ -29,6 +29,7 @@ int main()
     {
         OPS[i] = nop;
     }
+    OPS[20] = mov;
     OPS[21] = add;
     
     /* For testing, just give us some memory */
