@@ -9,11 +9,20 @@
 #include "mem.h"
 #include <stdio.h>
 
+void set_status_bits(INT16* REGS, UINT8 C, UINT8 Z, UINT8 N, UINT8 V)
+{
+    REGS[STATUS_REG] |= (~C_MASK) | (~Z_MASK) | (~N_MASK) | (~V_MASK);
+    REGS[STATUS_REG] &= (C_MASK) | (C << STATUS_C_BIT);
+    REGS[STATUS_REG] &= (Z_MASK) | (Z << STATUS_Z_BIT);
+    REGS[STATUS_REG] &= (N_MASK) | (N << STATUS_N_BIT);
+    REGS[STATUS_REG] &= (V_MASK) | (V << STATUS_V_BIT);
+}
+
 UINT8* read_mem(UINT8* MEM_SPACE, INT16* REGS, UINT16 ADDR, UINT16 READMODE, UINT16 BW)
 {
     static UINT16 GENERATED_CONSTANTS[6] = {0, 1, 2, -1, 4, 8};
     
-    UINT16 OPERAND_SIZE = ADDR==STACK_POINTER?1:2-BW;
+    UINT16 OPERAND_SIZE = (ADDR==STACK_POINTER || ADDR==PC_ADDRESS)?2:2-BW;
 
     if (ADDR == CONST_GENERATOR)
     {

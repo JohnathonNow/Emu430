@@ -32,22 +32,15 @@ int main()
     OPS[20] = mov;
     OPS[21] = add;
     
-    /* For testing, just give us some memory */
-    REGISTERS[PC_ADDRESS] = 18;
-    WORD_POINTER[5] = 0x13A4;
-    WORD_POINTER[6] = 0x2748;
-    WORD_POINTER[7] = 0x9979;
-    WORD_POINTER[8] = 1;
-    WORD_POINTER[9] = 0x5292;
-    WORD_POINTER[10] = 100;
-    WORD_POINTER[11] = 102;
-    WORD_POINTER[12] = 0x5335; //F2
-    WORD_POINTER[13] = 0x5335;
-    WORD_POINTER[14] = 0x5335;
-    WORD_POINTER[15] = 0x53E2;
-    WORD_POINTER[16] = 104;
-    WORD_POINTER[50] = 1200;
-    WORD_POINTER[51] = 1600;
+    REGISTERS[PC_ADDRESS] = MIN_CODE_ADDRESS;
+
+    /* Read in memory from stdin */
+    for (i = 0; i < MAX_MEMORY_ADDRESS / 2; i++)
+    {
+        UINT32 in;
+        scanf("%X", &in);
+        WORD_POINTER[i] = (UINT16)in;
+    }
 
     /* Advance the PC until we are out of bounds */ 
     while ( REGISTERS[PC_ADDRESS] <= MAX_CODE_ADDRESS && REGISTERS[PC_ADDRESS] >= MIN_CODE_ADDRESS )
@@ -77,11 +70,11 @@ int main()
             translated.as      =   ( instruction >> LONG_AS_SHIFT )     & LONG_AS_MASK;
             translated.src_reg =   ( instruction >> LONG_SRCREG_SHIFT ) & LONG_SRCREG_MASK;
         }
-        printf("%d  %d\n", REGISTERS[PC_ADDRESS], translated.opcode);
+        printf("PC: %d  OP: %d\n", REGISTERS[PC_ADDRESS], translated.opcode);
+        printf("STATUS: %d\n", REGISTERS[STATUS_REG]);
         REGISTERS[PC_ADDRESS] += 2;
         OPS[translated.opcode] ( MEMORY_SPACE, REGISTERS, &translated );
     }
-    printf("%d\t%d\t%d\n", WORD_POINTER[51], REGISTERS[5], WORD_POINTER[52]);
 
     return EXIT_SUCCESS;
 }
