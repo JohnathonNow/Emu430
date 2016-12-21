@@ -29,8 +29,18 @@ int main()
     {
         OPS[i] = nop;
     }
+
+    OPS[ 8] = jne;
+    OPS[ 9] = jeq;
+    OPS[10] = jnc;
+    OPS[11] = jc;
+    OPS[12] = jin;
+    OPS[13] = jge;
+    OPS[14] = jl;
+    OPS[15] = jmp;
     OPS[20] = mov;
     OPS[21] = add;
+    OPS[24] = sub;
     
     REGISTERS[PC_ADDRESS] = MIN_CODE_ADDRESS;
 
@@ -57,7 +67,7 @@ int main()
         }
         else if ( ( ( instruction >> MEDIUM_INSTRUCTION_SHIFT ) ^ MEDIUM_INSTRUCTION_MASK ) == 0x7 )
         {  /* MEDIUM */
-            translated.opcode    = ( instruction >> MEDIUM_OPCODE_SHIFT )    & MEDIUM_OPCODE_MASK;
+            translated.opcode    = ( ( instruction >> MEDIUM_OPCODE_SHIFT )    & MEDIUM_OPCODE_MASK ) | 0x08;
             translated.pc_offset = ( instruction >> MEDIUM_PC_OFFSET_SHIFT ) & MEDIUM_PC_OFFSET_MASK;
         }
         else

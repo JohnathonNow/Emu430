@@ -75,8 +75,18 @@
     } tInstruction;
 
     UINT16 add(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 sub(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 mov(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 nop(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+
+    UINT16 jne(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jeq(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jnc(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jc(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jin(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jge(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jl(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 jmp(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     
     
 #endif

@@ -51,6 +51,11 @@
 
     void set_status_bits(INT16* REGS, UINT8 C, UINT8 Z, UINT8 N, UINT8 V);
 
+    UINT8 get_status_c(INT16* REGS);
+    UINT8 get_status_z(INT16* REGS);
+    UINT8 get_status_n(INT16* REGS);
+    UINT8 get_status_v(INT16* REGS);
+
 
     
     #if MIN_CODE_ADDRESS > MAX_CODE_ADDRESS

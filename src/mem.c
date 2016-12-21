@@ -9,6 +9,23 @@
 #include "mem.h"
 #include <stdio.h>
 
+UINT8 get_status_c(INT16* REGS)
+{
+    return (REGS[STATUS_REG] >> STATUS_C_BIT) & 1;
+}
+UINT8 get_status_n(INT16* REGS)
+{
+    return (REGS[STATUS_REG] >> STATUS_N_BIT) & 1;
+}
+UINT8 get_status_v(INT16* REGS)
+{
+    return (REGS[STATUS_REG] >> STATUS_V_BIT) & 1;
+}
+UINT8 get_status_z(INT16* REGS)
+{
+    return (REGS[STATUS_REG] >> STATUS_Z_BIT) & 1;
+}
+
 void set_status_bits(INT16* REGS, UINT8 C, UINT8 Z, UINT8 N, UINT8 V)
 {
     REGS[STATUS_REG] |= (~C_MASK) | (~Z_MASK) | (~N_MASK) | (~V_MASK);
