@@ -76,6 +76,7 @@
 
     UINT16 add(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 sub(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 cmp(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 mov(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 nop(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
 

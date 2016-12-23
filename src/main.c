@@ -41,6 +41,7 @@ int main()
     OPS[20] = mov;
     OPS[21] = add;
     OPS[24] = sub;
+    OPS[25] = cmp;
     
     REGISTERS[PC_ADDRESS] = MIN_CODE_ADDRESS;
 

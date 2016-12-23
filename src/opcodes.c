@@ -104,10 +104,25 @@ UINT16 jl(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec)
     return OP_SUCCESS;
 }
 
+/* The cmp opcode
+ * 
+ *  Does D - S and sets the flags
+ *  TODO: Add memory checks
+ *
+ */
+UINT16 cmp(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
+{
+    INT16* D = (INT16*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+    INT16 OLD_D = *D;
+    sub(MEM_SPACE, REGS, E); /* Do sub, to reuse code */
+    *D = OLD_D; /* Restore old destination value */
+    return OP_SUCCESS;
+}
 /* The sub opcode
  * 
  *  Essentially D -= S
  *  TODO: Add memory checks
+ *  TODO: Consider just having sub call add
  *
  */
 UINT16 sub(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
