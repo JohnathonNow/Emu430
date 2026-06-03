@@ -80,6 +80,12 @@
     UINT16 mov(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 nop(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
 
+    UINT16 bit(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 bic(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 bis(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 xor(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+    UINT16 and(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
+
     UINT16 jne(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 jeq(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
     UINT16 jnc(UINT8* MEM_SPACE, INT16* REGS, tInstruction* exec);
