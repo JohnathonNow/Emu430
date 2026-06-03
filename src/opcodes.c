@@ -239,3 +239,186 @@ UINT16 nop(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
 
     return OP_SUCCESS;
 }
+
+/* The bic opcode
+ *
+ *  Essentially D &= ~S
+ *  Status bits are not affected.
+ *
+ */
+UINT16 bic(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
+{
+    if (E->bw)
+    {
+        INT8* S = (INT8*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT8* D = (INT8*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+        *D &= ~(*S);
+    }
+    else
+    {
+        INT16* S = (INT16*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT16* D = (INT16*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+        *D &= ~(*S);
+    }
+    return OP_SUCCESS;
+}
+
+/* The bis opcode
+ *
+ *  Essentially D |= S
+ *  Status bits are not affected.
+ *
+ */
+UINT16 bis(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
+{
+    if (E->bw)
+    {
+        INT8* S = (INT8*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT8* D = (INT8*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+        *D |= (*S);
+    }
+    else
+    {
+        INT16* S = (INT16*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT16* D = (INT16*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+        *D |= (*S);
+    }
+    return OP_SUCCESS;
+}
+
+/* The and opcode
+ *
+ *  Essentially D &= S
+ *  Status bits:
+ *  N: Set if result is negative, reset if positive
+ *  Z: Set if result is zero, reset otherwise
+ *  C: Set if result is not zero, reset otherwise
+ *  V: Reset
+ *
+ */
+UINT16 and(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
+{
+    UINT8 N = 0;
+    UINT8 Z = 0;
+    UINT8 C = 0;
+    UINT8 V = 0;
+
+    if (E->bw)
+    {
+        INT8* S = (INT8*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT8* D = (INT8*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+        *D &= (*S);
+
+        N = (*D < 0);
+        Z = (*D == 0);
+        C = (*D != 0);
+    }
+    else
+    {
+        INT16* S = (INT16*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT16* D = (INT16*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+        *D &= (*S);
+
+        N = (*D < 0);
+        Z = (*D == 0);
+        C = (*D != 0);
+    }
+
+    set_status_bits(REGS, C, Z, N, V);
+
+    return OP_SUCCESS;
+}
+
+/* The xor opcode
+ *
+ *  Essentially D ^= S
+ *  Status bits:
+ *  N: Set if result is negative, reset if positive
+ *  Z: Set if result is zero, reset otherwise
+ *  C: Set if result is not zero, reset otherwise
+ *  V: Set if both operands are negative
+ *
+ */
+UINT16 xor(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
+{
+    UINT8 N = 0;
+    UINT8 Z = 0;
+    UINT8 C = 0;
+    UINT8 V = 0;
+
+    if (E->bw)
+    {
+        INT8* S = (INT8*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT8* D = (INT8*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+
+        V = ((*S < 0) && (*D < 0));
+
+        *D ^= (*S);
+
+        N = (*D < 0);
+        Z = (*D == 0);
+        C = (*D != 0);
+    }
+    else
+    {
+        INT16* S = (INT16*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT16* D = (INT16*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+
+        V = ((*S < 0) && (*D < 0));
+
+        *D ^= (*S);
+
+        N = (*D < 0);
+        Z = (*D == 0);
+        C = (*D != 0);
+    }
+
+    set_status_bits(REGS, C, Z, N, V);
+
+    return OP_SUCCESS;
+}
+
+/* The bit opcode
+ *
+ *  Does S & D and sets the flags, D is not modified.
+ *  Status bits are same as AND:
+ *  N: Set if result is negative, reset if positive
+ *  Z: Set if result is zero, reset otherwise
+ *  C: Set if result is not zero, reset otherwise
+ *  V: Reset
+ *
+ */
+UINT16 bit(UINT8* MEM_SPACE, INT16* REGS, tInstruction* E)
+{
+    UINT8 N = 0;
+    UINT8 Z = 0;
+    UINT8 C = 0;
+    UINT8 V = 0;
+
+    if (E->bw)
+    {
+        INT8* S = (INT8*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT8* D = (INT8*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+
+        INT8 result = (*D) & (*S);
+
+        N = (result < 0);
+        Z = (result == 0);
+        C = (result != 0);
+    }
+    else
+    {
+        INT16* S = (INT16*)(read_mem(MEM_SPACE, REGS, E->src_reg, E->as, E->bw));
+        INT16* D = (INT16*)(read_mem(MEM_SPACE, REGS, E->dst_reg, E->ad, E->bw));
+
+        INT16 result = (*D) & (*S);
+
+        N = (result < 0);
+        Z = (result == 0);
+        C = (result != 0);
+    }
+
+    set_status_bits(REGS, C, Z, N, V);
+
+    return OP_SUCCESS;
+}

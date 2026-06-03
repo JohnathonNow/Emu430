@@ -42,6 +42,11 @@ int main()
     OPS[21] = add;
     OPS[24] = sub;
     OPS[25] = cmp;
+    OPS[27] = bit;
+    OPS[28] = bic;
+    OPS[29] = bis;
+    OPS[30] = xor;
+    OPS[31] = and;
     
     REGISTERS[PC_ADDRESS] = MIN_CODE_ADDRESS;
 
